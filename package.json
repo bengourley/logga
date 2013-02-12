@@ -1,0 +1,18 @@
+{
+  "name": "logga",
+  "version": "0.0.0",
+  "description": "A really simple logger with colours and conventional levels.",
+  "main": "logga.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "keywords": [
+    "logger"
+  ],
+  "author": "Ben Gourley",
+  "license": "BSD",
+  "dependencies": {
+    "colors": "~0.6.0-1"
+  }
+}
