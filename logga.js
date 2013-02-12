@@ -25,10 +25,12 @@ function logger(options) {
 
   var log = { options: options }
 
-  function writeLog(color) {
+  function writeLog(level) {
     var args = Array.prototype.slice.call(arguments, 1)
+    // Short circuit if this log is lower than the current log level
+    if (levels[level].rank < levels[log.options.logLevel].rank) return
     if (log.options.colors) {
-      args.unshift((new Date()).toISOString()[color])
+      args.unshift((new Date()).toISOString()[levels[level].color])
     } else {
       args.unshift((new Date()).toISOString())
     }
@@ -38,14 +40,7 @@ function logger(options) {
   // Create a function for each log level
   Object.keys(levels).forEach(function (level) {
     try {
-      if (levels[level].rank < levels[log.options.logLevel].rank) {
-        // loglevel is set higher than this, so let the
-        // function be called, but don't output anything
-        log[level] = function () {}
-      } else {
-        // Create a function that has this log level's desired color
-        log[level] = writeLog.bind(null, levels[level].color)
-      }
+      log[level] = writeLog.bind(null, level)
     } catch (e) {
       throw new Error('Unsupported log level `' + log.options.logLevel + '`')
     }
