@@ -15,10 +15,11 @@ var util = require('util')
     { logLevel: 'info'
     , outStream: process.stdout
     , colors: true
+    , context: ''
+    , timeOnly: false
     }
 
 function logger(options) {
-
 
   if (!options) options = {}
   options.__proto__ = defaults
@@ -29,10 +30,16 @@ function logger(options) {
     var args = Array.prototype.slice.call(arguments, 1)
     // Short circuit if this log is lower than the current log level
     if (levels[level].rank < levels[log.options.logLevel].rank) return
+
+    if (options.context) {
+      args.unshift('[' + options.context + ']')
+    }
+    var timeStamp = options.timeOnly ?
+      (new Date()).toLocaleTimeString() : (new Date()).toISOString()
     if (log.options.colors) {
-      args.unshift((new Date()).toISOString()[levels[level].color])
+      args.unshift(timeStamp[levels[level].color])
     } else {
-      args.unshift((new Date()).toISOString())
+      args.unshift(timeStamp)
     }
     log.options.outStream.write(util.format.apply(null, args) + '\n')
   }
@@ -45,5 +52,15 @@ function logger(options) {
       throw new Error('Unsupported log level `' + log.options.logLevel + '`')
     }
   })
+
+  log.setContext = function(context) {
+    var newOptions = {}
+    Object.keys(options).forEach(function (key) {
+      newOptions[key] = options[key]
+    })
+    newOptions.context = context
+    return logger(newOptions)
+  }
+
   return log
 }
