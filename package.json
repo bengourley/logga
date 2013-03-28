@@ -1,4 +1,4 @@
-{
+  {
   "name": "logga",
   "version": "0.0.1",
   "description": "A really simple logger with colours and conventional levels.",

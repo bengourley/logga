@@ -39,5 +39,36 @@ describe('logga()', function (done) {
     })
   })
 
+  it('should prefix context', function (done) {
 
+    var output = { write: function (data) {
+      assert.ok(data.match(/\[test\] info/), data)
+      done()
+    }}
+    var logger = require('..')({ context: 'test', colors: false, outStream: output })
+    logger.info('info')
+  })
+
+  it('should prefix duplicate current logger with new context', function (done) {
+
+    var output = { write: function (data) {
+      assert.ok(data.match(/\[new\] info/), data)
+      done()
+    }}
+    var logger = require('..')({ context: 'test', colors: false, outStream: output })
+    var newLogger = logger.setContext('new')
+    newLogger.info('info')
+
+  })
+
+  it('should should time only when asked', function (done) {
+
+    var output = { write: function (data) {
+      assert.equal(data.length, 14)
+      done()
+    }}
+    var logger = require('..')({ timeOnly: true, colors: false, outStream: output })
+    logger.info('info')
+
+  })
 })
