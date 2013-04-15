@@ -28,7 +28,7 @@ function logger(options) {
 
   function writeLog(level) {
     var args = Array.prototype.slice.call(arguments, 1)
-      // format the message here because it made contain placeholders
+      // format the message here because it may contain placeholders
       , message = util.format.apply(null, args)
       , output = [message]
 
