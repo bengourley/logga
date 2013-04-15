@@ -61,7 +61,7 @@ describe('logga()', function (done) {
 
   })
 
-  it('should should time only when asked', function (done) {
+  it('should show only time when asked', function (done) {
 
     var output = { write: function (data) {
       assert.equal(data.length, 14)
@@ -69,6 +69,19 @@ describe('logga()', function (done) {
     }}
     var logger = require('..')({ timeOnly: true, colors: false, outStream: output })
     logger.info('info')
+
+  })
+
+
+  it('should correctly embed placeholders into message', function (done) {
+
+    var output = { write: function (data) {
+      assert.equal(data.substring(data.lastIndexOf('Z') + 2)
+        , 'I am a placeholder so is this 999\n')
+      done()
+    }}
+    var logger = require('..')({ colors: false, outStream: output })
+    logger.info('I am a %s so is this %d', 'placeholder', 999)
 
   })
 })
