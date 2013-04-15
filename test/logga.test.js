@@ -61,7 +61,7 @@ describe('logga()', function (done) {
 
   })
 
-  it('should should time only when asked', function (done) {
+  it('should show only time when asked', function (done) {
 
     var output = { write: function (data) {
       assert.equal(data.length, 14)
