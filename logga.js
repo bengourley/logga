@@ -28,20 +28,26 @@ function logger(options) {
 
   function writeLog(level) {
     var args = Array.prototype.slice.call(arguments, 1)
+      // format the message here because it made contain placeholders
+      , message = util.format.apply(null, args)
+      , output = [message]
+
     // Short circuit if this log is lower than the current log level
     if (levels[level].rank < levels[log.options.logLevel].rank) return
 
     if (options.context) {
-      args.unshift('[' + options.context + ']')
+      output.unshift('[' + options.context + ']')
     }
     var timeStamp = options.timeOnly ?
       (new Date()).toLocaleTimeString() : (new Date()).toISOString()
+
     if (log.options.colors) {
-      args.unshift(timeStamp[levels[level].color])
+      output.unshift(timeStamp[levels[level].color])
     } else {
-      args.unshift(timeStamp)
+      output.unshift(timeStamp)
     }
-    log.options.outStream.write(util.format.apply(null, args) + '\n')
+
+    log.options.outStream.write(util.format.apply(null, output) + '\n')
   }
 
   // Create a function for each log level
