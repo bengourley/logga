@@ -84,4 +84,24 @@ describe('logga()', function (done) {
     logger.info('I am a %s so is this %d', 'placeholder', 999)
 
   })
+
+  it('should allow hostname to be switched on', function (done) {
+    exec('node ./test/fixtures/hostname-on', function (err, stdout, stderr) {
+      var os = require('os')
+      assert(!err)
+      assert(/info/.test(stdout), "info line is printed to stdout")
+      assert.notEqual(stdout.indexOf(os.hostname(), -1, "hostname is included in output"))
+      done()
+    })
+  })
+
+  it('should allow log levels to be printed out', function (done) {
+    exec('node ./test/fixtures/printlevel-on', function (err, stdout, stderr) {
+      var os = require('os')
+      assert(!err)
+      assert(/INFO/.test(stdout), "info line is printed to stdout")
+      assert(/ERROR/.test(stdout), "error line is printed to stdout")
+      done()
+    })
+  })
 })

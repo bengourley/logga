@@ -14,10 +14,14 @@ var util = require('util')
   , defaults =
     { logLevel: 'info'
     , outStream: process.stdout
+    , hostname: false
     , colors: true
+    , printLevel: false
     , context: ''
     , timeOnly: false
     }
+  , os = require('os')
+  , hostname = os.hostname()
 
 function logger(options) {
 
@@ -34,6 +38,14 @@ function logger(options) {
 
     // Short circuit if this log is lower than the current log level
     if (levels[level].rank < levels[log.options.logLevel].rank) return
+
+    if (options.printLevel) {
+      output.unshift(level.toUpperCase())
+    }
+
+    if (options.hostname) {
+      output.unshift(hostname)
+    }
 
     if (options.context) {
       output.unshift('[' + options.context + ']')
