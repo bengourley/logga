@@ -39,6 +39,8 @@ logger.fatal('The apocalypse is upon us')
 - `logLevel` – can be one of the following: 'trace', 'debug', 'info', 'warn', 'error' or 'fatal'. Default: `'info'`.
 - `colors` – whether the log output is in color. Default: `true`.
 - `outStream` - the output stream to write to (or an object with a `write()` method). Default: `process.stdout`.
+- `printLevel` - If true, includes the log level in the message, in uppercase. Default: `false`.
+- `hostname` - If true, includes the hostname in the message. Default: `false`.
 
 Options can be passed upon creation, or set on the fly at an point, eg.:
 
